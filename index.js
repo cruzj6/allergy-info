@@ -45,7 +45,7 @@ const handlers = {
 			.then(loc => fetchAllergyData(loc.postalCode))
 			.then(forecast => {
 				const response = `Today in ${location.city} ${location.state}, pollen count is ${forecast.pollen_count}`;
-		    this.emit(':tellWithCard', response, SKILL_NAME, response);
+				this.emit(':tellWithCard', response, SKILL_NAME, response);
 			});
 	},
 
