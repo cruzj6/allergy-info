@@ -1,0 +1,12 @@
+{
+  "name": "allergyinfo",
+  "version": "1.0.0",
+  "description": "alexa skill for allergy info",
+  "main": "index.js",
+  "author": "Joey Cruz",
+  "license": "MIT",
+  "dependencies": {
+    "alexa-sdk": "^1.0.9",
+    "axios": "^0.16.1"
+  }
+}
