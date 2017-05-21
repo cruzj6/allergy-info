@@ -20,17 +20,19 @@ const fetchAllergyData = zipcode => (
 
 		 axios.get(CONSTS.POLLEN_API_URL + `?location=[${loc.lat}, ${loc.lon}]`)
 			.then(response => response.data ? response.data.forecast[3] : null)
-			.catch(err => console.error('Error making request', { err }))
+			.catch(err => console.error('ERROR: making request to pollen api', { err }))
 	)
 )
 
-const fetchDeviceLocation = (deviceId, consentToken) => axios.get(AMAZON_DEVICE_LOCATION_URL(deviceId), {
-	headers: {
-		Host: 'api.amazonalexa.com',
-		Accept: 'application/json',
-		Authorization: `Bearer ${consentToken}`
-	}
-})
+const fetchDeviceLocation = (deviceId, consentToken) => (
+	axios.get(AMAZON_DEVICE_LOCATION_URL(deviceId), {
+		headers: {
+			Host: 'api.amazonalexa.com',
+			Accept: 'application/json',
+			Authorization: `Bearer ${consentToken}`
+		}
+	}).catch(err => console.error('ERROR: making request for device info', { err }))
+)
 
 const handlers = {
 	LaunchRequest () {
