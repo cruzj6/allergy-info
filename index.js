@@ -33,39 +33,41 @@ const fetchDeviceLocation = (deviceId, consentToken) => axios.get(AMAZON_DEVICE_
 })
 
 const handlers = {
-		LaunchRequest () {
-			this.emit('GetAllergyInfoIntent');
-	 	},
+	LaunchRequest () {
+		this.emit('GetAllergyInfoIntent');
+	},
 
-    GetAllergyInfoIntent () {
-			const consentToken = this.event.session.user.permissions.consentToken;
-			const deviceId = this.event.context.System.device.deviceId;
+	GetAllergyInfoIntent () {
+		const consentToken = this.event.session.user.permissions.consentToken;
+		const deviceId = this.event.context.System.device.deviceId;
 
-			fetchDeviceLocation(deviceId, consentToken)
-				.then(loc => fetchAllergyData(loc.postalCode))
-				.then(forecast => {
-					const response = `Today in ${location.city} ${location.state}, pollen count is ${forecast.pollen_count}`;
-		      this.emit(':tellWithCard', response, SKILL_NAME, response);
-				});
-    },
+		fetchDeviceLocation(deviceId, consentToken)
+			.then(loc => fetchAllergyData(loc.postalCode))
+			.then(forecast => {
+				const response = `Today in ${location.city} ${location.state}, pollen count is ${forecast.pollen_count}`;
+		    this.emit(':tellWithCard', response, SKILL_NAME, response);
+			});
+	},
 
-    'AMAZON.HelpIntent': function () {
-      var speechOutput = "You can ask me for the current pollen count";
-      var reprompt = "What can I help you with?";
-      this.emit(':ask', speechOutput, reprompt);
-    },
+	'AMAZON.HelpIntent': function () {
+		const speechOutput = "You can ask me for the current pollen count";
+		const reprompt = "What can I help you with?";
 
-    'AMAZON.CancelIntent': function () {
-      this.emit(':tell', 'Goodbye!');
-    },
+		this.emit(':ask', speechOutput, reprompt);
+	},
 
-    'AMAZON.StopIntent': function () {
-      this.emit(':tell', 'Goodbye!');
-    }
+	'AMAZON.CancelIntent': function () {
+		this.emit(':tell', 'Goodbye!');
+	},
+
+	'AMAZON.StopIntent': function () {
+		this.emit(':tell', 'Goodbye!');
+	}
 };
 
 exports.handler = (event, context, callback) => {
-    const alexa = Alexa.handler(event, context);
-    alexa.registerHandlers(handlers);
-    alexa.execute();
+	const alexa = Alexa.handler(event, context);
+
+	alexa.registerHandlers(handlers);
+	alexa.execute();
 };
